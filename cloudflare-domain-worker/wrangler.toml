@@ -1,0 +1,16 @@
+name = "domain-mail-worker"
+main = "src/index.js"
+compatibility_date = "2026-03-05"
+workers_dev = true
+
+[[kv_namespaces]]
+binding = "MAIL_KV"
+id = "YOUR_KV_NAMESPACE_ID"
+preview_id = "YOUR_KV_PREVIEW_NAMESPACE_ID"
+
+[vars]
+MAIL_DOMAIN = "example.com"
+ADMIN_AUTH_HEADER = "X-Admin-Password"
+MESSAGE_TTL_SECONDS = "172800"
+TOKEN_TTL_SECONDS = "604800"
+MAX_MESSAGES_PER_INBOX = "200"

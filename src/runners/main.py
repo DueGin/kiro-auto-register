@@ -13,12 +13,13 @@ import json
 import os
 from datetime import datetime
 from config import HEADLESS, SLOW_MO, BROWSER_TYPE
-from services.email_service import create_temp_email, wait_for_verification_email, ChatGPTMailClient
+from services.email_service import create_temp_email, wait_for_verification_email, get_mail_client
 from selenium.webdriver.common.action_chains import ActionChains
 from helpers.multilang import lang_selector
 from helpers.browser_factory import create_driver as factory_create_driver, cleanup_driver
 from services.kiro_oauth import perform_kiro_oauth_in_browser, KiroOAuthClient
 from services.aws_sso_oidc import perform_aws_sso_oidc_auto
+from services.external_sync import sync_authorized_result
 
 # 截图保存目录 (src 目录)
 SCREENSHOT_DIR = str(Path(__file__).parent.parent)
@@ -54,7 +55,10 @@ def save_account(email, password, name, jwt_token="", kiro_token=None, aws_sso_t
         account_info["kiro_csrf_token"] = kiro_token.get("csrf_token", "")
         account_info["kiro_refresh_token"] = kiro_token.get("refresh_token", "")
         account_info["kiro_expires_in"] = kiro_token.get("expires_in", 0)
-        account_info["kiro_profile_arn"] = kiro_token.get("profile_arn", "")
+        profile_arn = kiro_token.get("profile_arn", "")
+        account_info["kiro_profile_arn"] = profile_arn
+        if profile_arn:
+            account_info["profileArn"] = profile_arn
         account_info["status"] = "kiro_authorized"
     
     # 添加 AWS SSO OIDC token 信息 (用于 Kiro Account Manager 导入)
@@ -84,8 +88,10 @@ def save_account(email, password, name, jwt_token="", kiro_token=None, aws_sso_t
             json.dump(accounts, f, ensure_ascii=False, indent=2)
         
         print(f"✅ 账号已保存: {email}")
+        return account_info
     except Exception as e:
         print(f"❌ 保存账号失败: {e}")
+        return account_info
 
 
 def save_account_info(email, password, name, jwt_token):
@@ -922,7 +928,7 @@ def run(fixed_account=None):
             print("=" * 60)
             
             # 使用已存在的邮件客户端
-            mail_client = ChatGPTMailClient()
+            mail_client = get_mail_client()
             
             aws_sso_token = perform_aws_sso_oidc_auto(
                 driver=driver,
@@ -943,8 +949,10 @@ def run(fixed_account=None):
             print("   账号已注册，可稍后手动获取 AWS SSO Token")
 
         # 保存账号信息 (无论如何都尝试保存，因为可能已经成功)
-        save_account(email_address, password, random_name, jwt_token, kiro_token, aws_sso_token)
-        print("\n✅ 账号流程结束，已保存信息到 accounts.jsonl")
+        saved_account = save_account(email_address, password, random_name, jwt_token, kiro_token, aws_sso_token)
+        if saved_account:
+            sync_authorized_result(saved_account)
+        print("\nAccount flow finished, saved info to accounts.json")
 
     except Exception as e:
         print(f"过程发生错误: {e}")

@@ -264,3 +264,30 @@ python src/runners/debug_aws_login.py
 - [AWS CodeWhisperer](https://aws.amazon.com/codewhisperer/)
 
 ---
+
+## External Sync
+
+If you want to forward the authorized registration result to another app,
+configure `config/config.yaml`:
+
+```yaml
+external_sync:
+  enabled: true
+  url: "http://127.0.0.1:8080/api/v1/admin/kiro/import/aws-credentials/v2"
+  api_key: "YOUR_ADMIN_API_KEY"
+  timeout: 30
+  debug_log: false   # set true to print request/response debug logs
+  account_options:
+    priority: 1
+    model_capabilities: ["claude"]
+```
+
+The program automatically sends:
+
+```json
+{
+  "raw_payload": "authorized registration result (object or array, passed through as-is)",
+  "account_options": "fixed options from external_sync.account_options"
+}
+```
+

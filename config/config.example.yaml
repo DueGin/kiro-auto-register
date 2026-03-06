@@ -1,0 +1,85 @@
+# 邮箱服务配置
+email:
+  provider: "cloudflare_domain"    # chatgpt | cloudflare_domain
+  # 你部署的 cloudflare_temp_email Worker 服务地址
+  worker_url: "https://your-worker-url.example.com"
+
+  # 邮箱域名（你在 Cloudflare Email Routing 中配置的收信域名）
+  domain: "your.domain.com"
+
+  # 生成的随机邮箱前缀长度
+  prefix_length: 10
+
+  # 等待验证邮件的超时时间（秒）
+  wait_timeout: 120
+
+  # 轮询邮件的间隔时间（秒）
+  poll_interval: 3
+
+  # 管理员密码（用于管理员 API）
+  admin_password: "your_secure_password"
+  worker_auth_header: "X-Admin-Password"
+
+browser:
+  headless: false
+  slow_mo: 100
+  type: "edge" # chrome | edge
+  driver_strategy: "auto" # auto | manager | system | local
+  user_agent_mode: "local" # auto | local | random
+
+region:
+  current: "usa" # germany | japan | usa
+  device_type: "desktop" # desktop | mobile
+  use_proxy: false
+  proxy_mode: "static" # static | dynamic
+  proxy_url: ""
+  proxy_api:
+    url: "http://your-proxy-api.example.com/get?key=YOUR_API_KEY"
+    timeout: 10
+    protocol: "http" # http | socks5
+    auth_required: false
+    username: ""
+    password: ""
+  profiles:
+    germany:
+      locale: "de-DE"
+      timezone: "Europe/Berlin"
+      accept_language: "de-DE,de;q=0.9,en;q=0.8"
+      desktop_user_agents:
+        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      mobile_user_agents:
+        - "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1"
+    japan:
+      locale: "ja-JP"
+      timezone: "Asia/Tokyo"
+      accept_language: "ja-JP,ja;q=0.9,en;q=0.8"
+      desktop_user_agents:
+        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      mobile_user_agents:
+        - "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1"
+    usa:
+      locale: "en-US"
+      timezone: "America/New_York"
+      accept_language: "en-US,en;q=0.9"
+      desktop_user_agents:
+        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      mobile_user_agents:
+        - "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1"
+
+http:
+  timeout: 30
+
+external_sync:
+  enabled: false
+  url: "https://your-api.example.com/api/v1/admin/kiro/import/aws-credentials/v2"
+  api_key: "CHANGE_ME"
+  timeout: 30
+  debug_log: false
+  # account_options: {}
+  account_options:
+    name: "Example Account"
+    proxy_id: 4
+    group_ids: [3]
+    concurrency: 5
+    priority: 1
+    model_capabilities: ["claude"]

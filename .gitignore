@@ -1,0 +1,49 @@
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# Python tooling caches and build artifacts
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+build/
+dist/
+.eggs/
+*.egg-info/
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local environment and runtime artifacts
+.env
+.env.*
+*.log
+*.tmp
+accounts.json
+config/config.yaml
+
+# Generated screenshots
+final_success.png
+screenshot.png
+src/step*.png
+
+# Cloudflare Worker local artifacts
+cloudflare-domain-worker/node_modules/
+cloudflare-domain-worker/.wrangler/
+cloudflare-domain-worker/.dev.vars
+cloudflare-domain-worker/.env
+cloudflare-domain-worker/.env.*

@@ -19,6 +19,7 @@ import cbor2
 import requests
 from urllib.parse import urlparse, parse_qs
 from typing import Optional, Dict, Tuple
+from helpers.utils import build_request_user_agent
 
 # Kiro Web Portal 配置
 KIRO_WEB_PORTAL = "https://app.kiro.dev"
@@ -33,7 +34,7 @@ class KiroOAuthClient:
             "Content-Type": "application/cbor",
             "Accept": "application/cbor",
             "smithy-protocol": "rpc-v2-cbor",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+            "User-Agent": build_request_user_agent(),
         })
     
     @staticmethod

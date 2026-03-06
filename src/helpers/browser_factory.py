@@ -12,6 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from config import HEADLESS, BROWSER_TYPE, DRIVER_STRATEGY
+from helpers.utils import build_request_user_agent
 
 
 class BrowserFactory:
@@ -157,7 +158,7 @@ class BrowserFactory:
         if user_agent:
             options.add_argument(f'--user-agent={user_agent}')
         else:
-            default_ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            default_ua = build_request_user_agent()
             options.add_argument(f'--user-agent={default_ua}')
         
         # 语言设置
