@@ -55,6 +55,7 @@ pip install -r requirements.txt
 # 浏览器配置
 browser:
   headless: false      # 是否无头模式
+  incognito: false     # 是否无痕模式（Chrome/Edge）
   type: "edge"         # 浏览器类型: chrome 或 edge
   driver_strategy: "auto"  # WebDriver 获取策略
 
@@ -156,6 +157,9 @@ browser:
   
   # 无头模式（建议调试时关闭）
   headless: false
+
+  # 无痕模式（Chrome: Incognito，Edge: InPrivate）
+  incognito: false
   
   # 操作延迟（毫秒，模拟人类操作）
   slow_mo: 100

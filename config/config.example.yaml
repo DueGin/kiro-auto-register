@@ -22,6 +22,7 @@ email:
 
 browser:
   headless: false
+  incognito: false # 是否开启无痕模式（Chrome: Incognito / Edge: InPrivate）
   slow_mo: 100
   type: "edge" # chrome | edge
   driver_strategy: "auto" # auto | manager | system | local

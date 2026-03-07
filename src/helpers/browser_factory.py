@@ -11,7 +11,7 @@ from pathlib import Path
 # 将 src 目录添加到路径
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from config import HEADLESS, BROWSER_TYPE, DRIVER_STRATEGY
+from config import HEADLESS, BROWSER_TYPE, DRIVER_STRATEGY, INCOGNITO
 from helpers.utils import build_request_user_agent
 
 
@@ -25,6 +25,7 @@ class BrowserFactory:
         self.browser_type = BROWSER_TYPE.lower()
         self.driver_strategy = DRIVER_STRATEGY.lower()
         self.headless = HEADLESS
+        self.incognito = INCOGNITO
         self.driver = None
     
     def create_driver(self, proxy_url=None, user_agent=None, locale=None, accept_language=None):
@@ -80,6 +81,11 @@ class BrowserFactory:
         # 基本设置
         if self.headless:
             options.add_argument('--headless=new')
+
+        # 无痕模式
+        if self.incognito:
+            options.add_argument('--incognito')
+            print("🔒 已启用 Chrome 无痕模式")
         
         # 窗口大小
         common_resolutions = ["1920,1080", "1366,768", "1536,864", "1440,900", "1280,720"]
@@ -153,6 +159,16 @@ class BrowserFactory:
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
         options.add_argument('--disable-blink-features=AutomationControlled')
+
+        # 无痕模式
+        if self.incognito:
+            if self.browser_type == "edge":
+                options.add_argument('--inprivate')
+                options.add_argument('-inprivate')
+                print("🔒 已启用 Edge InPrivate 模式")
+            else:
+                options.add_argument('--incognito')
+                print("🔒 已启用 Chrome 无痕模式")
         
         # User-Agent
         if user_agent:

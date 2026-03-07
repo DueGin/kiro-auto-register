@@ -6,6 +6,21 @@ config_path = Path(__file__).parent.parent / "config" / "config.yaml"
 with open(config_path, "r", encoding="utf-8") as f:
     _config = yaml.safe_load(f)
 
+
+def _to_bool(value, default=False):
+    """Convert common config values to bool safely."""
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        return bool(value)
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized in {"1", "true", "yes", "y", "on"}:
+            return True
+        if normalized in {"0", "false", "no", "n", "off"}:
+            return False
+    return default
+
 # Email config
 EMAIL_PROVIDER = _config["email"].get("provider", "chatgpt")
 EMAIL_WORKER_URL = _config["email"]["worker_url"]
@@ -22,6 +37,7 @@ SLOW_MO = _config["browser"]["slow_mo"]
 BROWSER_TYPE = _config["browser"].get("type", "chrome")  # chrome or edge
 DRIVER_STRATEGY = _config["browser"].get("driver_strategy", "auto")  # auto, manager, system, local
 USER_AGENT_MODE = _config["browser"].get("user_agent_mode", "auto")
+INCOGNITO = _to_bool(_config["browser"].get("incognito", False), False)
 
 # Region config
 REGION_CURRENT = _config["region"]["current"]

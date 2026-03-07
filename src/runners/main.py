@@ -790,8 +790,22 @@ def run(fixed_account=None):
                 human_delay(3, 5)
                 
                 # 检查是否有错误弹窗，如果有就再点一次 Continue (最多重试3次)
+                def is_on_password_page():
+                    """Return True once password page is visible to avoid unnecessary verify retries."""
+                    try:
+                        password_inputs = driver.find_elements(By.CSS_SELECTOR, 'input[type="password"]')
+                        if any(el.is_displayed() for el in password_inputs):
+                            return True
+                        return "password" in driver.current_url.lower()
+                    except Exception:
+                        return False
+
                 for retry in range(3):
                     try:
+                        if is_on_password_page():
+                            print("✅ 已进入密码页，跳过验证码重试")
+                            break
+
                         page_source = driver.page_source
                         if "Error" in page_source or "error processing" in page_source or "Sorry" in page_source or "try again" in page_source.lower():
                             print(f"⚠️  检测到错误提示，再次点击 Continue... (重试 {retry + 1}/3)")
@@ -803,16 +817,22 @@ def run(fixed_account=None):
                                         driver.execute_script("arguments[0].click();", verify_btn)
                                         print("✅ 已再次点击 Continue")
                                         human_delay(3, 5)
+                                        if is_on_password_page():
+                                            print("✅ 已进入密码页，停止验证码重试")
                                         break
-                                except: continue
+                                except:
+                                    continue
                         else:
                             break  # 没有错误，跳出重试循环
-                    except: 
+                    except:
                         break
                 
                 # 点击后等待足够长的时间让页面跳转
-                print("等待页面跳转 (由于代理可能较慢)...")
-                human_delay(8, 12)
+                if is_on_password_page():
+                    print("✅ 已在密码页，跳过额外等待，直接进入设置密码")
+                else:
+                    print("等待页面跳转 (由于代理可能较慢)...")
+                    human_delay(8, 12)
 
             except Exception as e:
                     print(f"⚠️  填写验证码失败: {e}")
