@@ -137,7 +137,7 @@ def build_random_user_agent():
 
 
 def build_request_user_agent():
-    """UA for HTTP request headers with configurable mode."""
+    """UA for browser and HTTP requests; no fixed UA list is read from config.yaml."""
     env_mode = os.getenv("USER_AGENT_MODE", "").strip().lower()
     mode = env_mode or str(USER_AGENT_MODE or "auto").strip().lower()
     if mode not in {"auto", "local", "random"}:
@@ -160,7 +160,7 @@ def get_region_config():
 
 
 def get_user_agent():
-    """获取当前地区和设备类型的随机 User-Agent"""
+    """获取当前运行环境使用的动态 User-Agent。"""
     return build_request_user_agent()
 
 
@@ -218,7 +218,7 @@ def get_region_config_by_name(region_name):
 
 
 def get_user_agent_for_region(region_name):
-    """获取指定地区的 User-Agent (强制 Windows + 动态版本号)"""
+    """获取指定地区运行时使用的动态 User-Agent。"""
     return build_request_user_agent()
 
 

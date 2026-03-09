@@ -46,26 +46,14 @@ region:
       locale: "de-DE"
       timezone: "Europe/Berlin"
       accept_language: "de-DE,de;q=0.9,en;q=0.8"
-      desktop_user_agents:
-        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-      mobile_user_agents:
-        - "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1"
     japan:
       locale: "ja-JP"
       timezone: "Asia/Tokyo"
       accept_language: "ja-JP,ja;q=0.9,en;q=0.8"
-      desktop_user_agents:
-        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-      mobile_user_agents:
-        - "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1"
     usa:
       locale: "en-US"
       timezone: "America/New_York"
       accept_language: "en-US,en;q=0.9"
-      desktop_user_agents:
-        - "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-      mobile_user_agents:
-        - "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1"
 
 http:
   timeout: 30
